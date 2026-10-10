@@ -1,0 +1,907 @@
+
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FreshMart 🌿 - Fresh & Organic Groceries in 10 Minutes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        fresh: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 font-sans text-slate-800 antialiased selection:bg-fresh-500 selection:text-white">
+
+    <div class="bg-fresh-900 text-fresh-100 text-xs sm:text-sm py-2 px-4">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-1">
+            <div class="flex items-center gap-4">
+                <span><i class="fa-solid fa-phone-volume mr-1.5 text-fresh-400"></i> +91 9665175390</span>
+                <span><i class="fa-solid fa-envelope mr-1.5 text-fresh-400"></i> support@freshmart.com</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <span class="flex items-center gap-1.5"><i class="fa-solid fa-bolt text-amber-400"></i> Lightning Fast Delivery in 10 Minutes</span>
+                <span class="hidden md:inline">|</span>
+                <span class="hidden md:inline cursor-pointer hover:underline">Help & Support</span>
+            </div>
+        </div>
+    </div>
+
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md shadow-sm border-b border-slate-100 transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center gap-2.5 group">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-fresh-600 to-fresh-400 flex items-center justify-center text-white shadow-md shadow-fresh-500/20 group-hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-leaf text-xl"></i>
+                </div>
+                <div>
+                    <span class="text-2xl font-extrabold tracking-tight text-slate-900">Fresh<span class="text-fresh-600">Mart</span></span>
+                    <span class="block text-[10px] uppercase tracking-widest text-fresh-700 font-bold -mt-1">Organic & Farm Fresh</span>
+                </div>
+            </a>
+
+            <!-- Search Bar (Desktop) -->
+            <div class="hidden md:flex flex-1 max-w-xl relative">
+                <input type="text" id="searchInput" placeholder="Search for fresh apples, milk, bread, organic vegetables..." 
+                    class="w-full pl-11 pr-4 py-3 bg-slate-100/80 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-fresh-500 focus:bg-white transition-all shadow-inner">
+                <div class="absolute left-4 top-3.5 text-slate-400">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+                <button onclick="handleSearch()" class="absolute right-2 top-2 bg-fresh-600 text-white px-4 py-1.5 rounded-xl text-xs font-semibold hover:bg-fresh-700 transition">Search</button>
+            </div>
+
+            <!-- Header Action Buttons -->
+            <div class="flex items-center gap-2 sm:gap-4">
+                <!-- Wishlist Button -->
+                <button onclick="openWishlistModal()" class="relative p-2.5 rounded-2xl text-slate-600 hover:bg-fresh-50 hover:text-fresh-600 transition" title="Wishlist">
+                    <i class="fa-regular fa-heart text-xl"></i>
+                    <span id="wishlistCount" class="absolute -top-1 -right-1 w-5 h-5 bg-rose-500 text-white rounded-full text-xs font-bold flex items-center justify-center ring-2 ring-white scale-0 transition-transform duration-300">0</span>
+                </button>
+
+                <!-- Cart Button -->
+                <button onclick="toggleCart()" class="relative flex items-center gap-3 px-4 py-2.5 rounded-2xl bg-fresh-50 border border-fresh-200 text-fresh-800 hover:bg-fresh-100 transition shadow-sm group">
+                    <div class="relative">
+                        <i class="fa-solid fa-bag-shopping text-xl text-fresh-600 group-hover:scale-110 transition-transform"></i>
+                        <span id="cartCountBadge" class="absolute -top-2 -right-2 w-5 h-5 bg-fresh-600 text-white rounded-full text-xs font-bold flex items-center justify-center ring-2 ring-white">0</span>
+                    </div>
+                    <div class="hidden sm:block text-left">
+                        <span class="block text-[10px] text-slate-500 uppercase tracking-wider font-semibold">My Cart</span>
+                        <span id="cartSubtotalHeader" class="text-xs font-bold text-slate-800">₹0.00</span>
+                    </div>
+                </button>
+
+                <!-- Profile -->
+                <div class="hidden sm:flex items-center gap-2.5 p-1.5 pr-3 rounded-2xl border border-slate-200 bg-slate-50">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=120" alt="User" class="w-8 h-8 rounded-xl object-cover">
+                    <div class="text-left text-xs">
+                        <span class="block font-bold text-slate-800">vivek yadav and omkar patil</span>
+                        <span class="text-fresh-700 text-[10px] font-semibold">Gold Member</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Search Input -->
+        <div class="md:hidden px-4 pb-3">
+            <div class="relative">
+                <input type="text" id="mobileSearchInput" placeholder="Search groceries..." 
+                    class="w-full pl-10 pr-4 py-2.5 bg-slate-100 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-fresh-500">
+                <div class="absolute left-3.5 top-3 text-slate-400">
+                    <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Main Hero Banner -->
+            <div class="lg:col-span-2 relative rounded-3xl overflow-hidden bg-gradient-to-r from-fresh-900 via-fresh-800 to-fresh-700 text-white p-8 sm:p-12 shadow-xl flex flex-col justify-center min-h-[340px]">
+                <div class="absolute -right-16 -bottom-16 w-64 h-64 bg-fresh-500/20 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="relative z-10 max-w-lg">
+                    <span class="inline-block bg-fresh-500/30 text-fresh-100 border border-fresh-400/30 text-xs font-bold px-3 py-1 rounded-full mb-4 tracking-wide uppercase">🌿 100% Organic & Farm Fresh</span>
+                    <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight mb-4 leading-tight">Fresh Groceries Delivered in <span class="text-fresh-200 underline decoration-fresh-400">10 Minutes</span></h1>
+                    <p class="text-fresh-100 text-sm sm:text-base mb-6 font-medium">Handpicked vegetables, farm-fresh fruits, dairy, breakfast essentials, and organic staples directly from local farmers.</p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#shopSection" class="bg-white text-fresh-900 font-bold px-6 py-3.5 rounded-2xl shadow-lg hover:bg-fresh-50 transition transform hover:-translate-y-0.5 flex items-center gap-2">
+                            <span>Shop Now</span>
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </a>
+                        <div class="flex items-center gap-2 text-xs text-fresh-200 font-semibold px-4 py-2">
+                            <i class="fa-solid fa-shield-check text-base text-fresh-400"></i> Quality Guaranteed
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Side Promotional Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
+                <div class="rounded-3xl bg-gradient-to-br from-amber-500 to-orange-600 text-white p-6 relative overflow-hidden shadow-md flex flex-col justify-between">
+                    <div class="relative z-10">
+                        <span class="bg-white/20 text-xs font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">Super Saver</span>
+                        <h3 class="text-xl font-bold mt-2">Organic Fruits Deal</h3>
+                        <p class="text-xs text-amber-100 mt-1">Flat 25% OFF on Apples, Bananas & Oranges</p>
+                    </div>
+                    <div class="mt-4 flex justify-between items-center relative z-10">
+                        <button onclick="filterCategory('Fruits & Veggies')" class="text-xs font-bold bg-white text-orange-700 px-4 py-2 rounded-xl shadow hover:bg-orange-50 transition">Grab Deal</button>
+                        <i class="fa-solid fa-apple-whole text-4xl text-white/20"></i>
+                    </div>
+                </div>
+
+                <div class="rounded-3xl bg-gradient-to-br from-emerald-700 to-teal-800 text-white p-6 relative overflow-hidden shadow-md flex flex-col justify-between">
+                    <div class="relative z-10">
+                        <span class="bg-white/20 text-xs font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">Breakfast Fresh</span>
+                        <h3 class="text-xl font-bold mt-2">Pure Dairy & Bakery</h3>
+                        <p class="text-xs text-emerald-100 mt-1">Fresh milk, butter, and whole wheat bread</p>
+                    </div>
+                    <div class="mt-4 flex justify-between items-center relative z-10">
+                        <button onclick="filterCategory('Dairy & Breakfast')" class="text-xs font-bold bg-white text-teal-800 px-4 py-2 rounded-xl shadow hover:bg-teal-50 transition">Explore Dairy</button>
+                        <i class="fa-solid fa-cow text-4xl text-white/20"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+            <div>
+                <h2 class="text-2xl font-bold text-slate-900" id="currentCategoryTitle">Explore All Groceries</h2>
+                <p class="text-xs sm:text-sm text-slate-500">Pick from our premium collection of fresh farm products</p>
+            </div>
+            
+            <!-- Category Filter Tabs -->
+            <div class="flex flex-wrap gap-2" id="categoryTabs">
+                <button onclick="filterCategory('All')" class="category-btn px-4 py-2.5 rounded-xl text-xs font-bold bg-fresh-600 text-white shadow-sm transition">All</button>
+                <button onclick="filterCategory('Fruits & Veggies')" class="category-btn px-4 py-2.5 rounded-xl text-xs font-bold bg-white text-slate-700 border border-slate-200 hover:bg-fresh-50 transition">Fruits & Veggies</button>
+                <button onclick="filterCategory('Dairy & Breakfast')" class="category-btn px-4 py-2.5 rounded-xl text-xs font-bold bg-white text-slate-700 border border-slate-200 hover:bg-fresh-50 transition">Dairy & Breakfast</button>
+                <button onclick="filterCategory('Beverages & Snacks')" class="category-btn px-4 py-2.5 rounded-xl text-xs font-bold bg-white text-slate-700 border border-slate-200 hover:bg-fresh-50 transition">Beverages & Snacks</button>
+                <button onclick="filterCategory('Organic & Staples')" class="category-btn px-4 py-2.5 rounded-xl text-xs font-bold bg-white text-slate-700 border border-slate-200 hover:bg-fresh-50 transition">Organic & Staples</button>
+            </div>
+        </div>
+
+        <!-- Product Grid -->
+        <div id="shopSection" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <!-- Populated dynamically via JavaScript -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="noProductsFound" class="hidden text-center py-16">
+            <i class="fa-solid fa-basket-shopping text-6xl text-slate-300 mb-4"></i>
+            <h3 class="text-xl font-bold text-slate-700">No groceries found</h3>
+            <p class="text-sm text-slate-500 mt-1">Try searching for another item or reset your filter.</p>
+            <button onclick="filterCategory('All')" class="mt-4 bg-fresh-600 text-white font-semibold px-5 py-2.5 rounded-xl text-xs hover:bg-fresh-700 transition">View All Products</button>
+        </div>
+    </section>
+
+    <section class="bg-fresh-50/60 border-y border-fresh-100 py-12 mt-16 mb-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="flex items-start gap-4 p-6 bg-white rounded-3xl shadow-sm border border-fresh-100">
+                    <div class="w-12 h-12 rounded-2xl bg-fresh-100 text-fresh-600 flex items-center justify-center text-xl shrink-0 font-bold">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-base">10-Minute Fast Delivery</h4>
+                        <p class="text-xs text-slate-500 mt-1">Lightning-fast neighborhood delivery straight to your doorstep.</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-4 p-6 bg-white rounded-3xl shadow-sm border border-fresh-100">
+                    <div class="w-12 h-12 rounded-2xl bg-fresh-100 text-fresh-600 flex items-center justify-center text-xl shrink-0 font-bold">
+                        <i class="fa-solid fa-seedling"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-base">Certified Organic</h4>
+                        <p class="text-xs text-slate-500 mt-1">Handpicked daily directly from verified organic farmers.</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-4 p-6 bg-white rounded-3xl shadow-sm border border-fresh-100">
+                    <div class="w-12 h-12 rounded-2xl bg-fresh-100 text-fresh-600 flex items-center justify-center text-xl shrink-0 font-bold">
+                        <i class="fa-solid fa-tags"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-base">Best Prices & Offers</h4>
+                        <p class="text-xs text-slate-500 mt-1">Great everyday discounts, cashback, and unbeatable value.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-slate-900 text-white pt-16 pb-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-slate-800">
+                <div class="lg:col-span-2">
+                    <a href="#" class="flex items-center gap-2.5 mb-4">
+                        <div class="w-10 h-10 rounded-xl bg-fresh-600 flex items-center justify-center text-white font-bold">
+                            <i class="fa-solid fa-leaf"></i>
+                        </div>
+                        <span class="text-2xl font-extrabold tracking-tight">Fresh<span class="text-fresh-500">Mart</span></span>
+                    </a>
+                    <p class="text-sm text-slate-400 mb-6 max-w-sm">Your ultimate online destination for fresh organic vegetables, juicy fruits, pure dairy, and everyday kitchen essentials.</p>
+                    <div class="flex items-center gap-3 text-slate-400">
+                        <a href="#" class="w-9 h-9 rounded-xl bg-slate-800 flex items-center justify-center hover:bg-fresh-600 hover:text-white transition"><i class="fa-brands fa-facebook-f text-sm"></i></a>
+                        <a href="#" class="w-9 h-9 rounded-xl bg-slate-800 flex items-center justify-center hover:bg-fresh-600 hover:text-white transition"><i class="fa-brands fa-instagram text-sm"></i></a>
+                        <a href="#" class="w-9 h-9 rounded-xl bg-slate-800 flex items-center justify-center hover:bg-fresh-600 hover:text-white transition"><i class="fa-brands fa-twitter text-sm"></i></a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-sm uppercase tracking-wider text-fresh-400 mb-4">Quick Links</h4>
+                    <ul class="space-y-2.5 text-sm text-slate-400">
+                        <li><a href="#" class="hover:text-white transition">About Us</a></li>
+                        <li><a href="#" class="hover:text-white transition">Delivery Areas</a></li>
+                        <li><a href="#" class="hover:text-white transition">Careers</a></li>
+                        <li><a href="#" class="hover:text-white transition">Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-sm uppercase tracking-wider text-fresh-400 mb-4">Categories</h4>
+                    <ul class="space-y-2.5 text-sm text-slate-400">
+                        <li><a href="#" onclick="filterCategory('Fruits & Veggies')" class="hover:text-white transition">Fruits & Veggies</a></li>
+                        <li><a href="#" onclick="filterCategory('Dairy & Breakfast')" class="hover:text-white transition">Dairy & Breakfast</a></li>
+                        <li><a href="#" onclick="filterCategory('Beverages & Snacks')" class="hover:text-white transition">Beverages & Snacks</a></li>
+                        <li><a href="#" onclick="filterCategory('Organic & Staples')" class="hover:text-white transition">Organic & Staples</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-sm uppercase tracking-wider text-fresh-400 mb-4">Newsletter</h4>
+                    <p class="text-xs text-slate-400 mb-4">Subscribe to get special organic vouchers and weekly discounts.</p>
+                    <form onsubmit="handleNewsletter(event)" class="space-y-2">
+                        <input type="email" id="newsletterEmail" placeholder="Enter your email" required
+                            class="w-full px-3.5 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:border-fresh-500">
+                        <button type="submit" class="w-full bg-fresh-600 text-white font-bold py-2.5 rounded-xl text-xs hover:bg-fresh-700 transition">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="pt-8 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500 gap-4">
+                <p>&copy; 2026 FreshMart Technologies Pvt. Ltd. All rights reserved.</p>
+                <div class="flex gap-4">
+                    <span>Privacy Policy</span>
+                    <span>Terms & Conditions</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div id="cartDrawer" class="fixed inset-0 z-50 overflow-hidden hidden">
+        <div class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm transition-opacity" onclick="toggleCart()"></div>
+        <div class="absolute inset-y-0 right-0 max-w-full flex pl-10">
+            <div class="w-screen max-w-md bg-white shadow-2xl flex flex-col">
+                <div class="p-6 border-b border-slate-100 flex items-center justify-between bg-fresh-50/50">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-fresh-600 text-white flex items-center justify-center font-bold">
+                            <i class="fa-solid fa-bag-shopping"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-900 text-lg">Your Shopping Cart</h3>
+                            <span id="cartDrawerItemCount" class="text-xs text-slate-500 font-medium">0 items</span>
+                        </div>
+                    </div>
+                    <button onclick="toggleCart()" class="w-9 h-9 rounded-xl bg-white border border-slate-200 text-slate-500 hover:bg-slate-100 transition flex items-center justify-center">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+
+                <div class="flex-1 overflow-y-auto p-6 space-y-4" id="cartItemsContainer">
+                    <!-- Cart items populated via JS -->
+                </div>
+
+                <div class="p-6 border-t border-slate-100 bg-slate-50">
+                    <div class="space-y-2 text-sm mb-4">
+                        <div class="flex justify-between text-slate-600">
+                            <span>Subtotal</span>
+                            <span id="cartSubtotal" class="font-semibold text-slate-900">₹0.00</span>
+                        </div>
+                        <div class="flex justify-between text-slate-600">
+                            <span>Express Delivery (10 min)</span>
+                            <span class="font-semibold text-emerald-600">FREE</span>
+                        </div>
+                        <div class="flex justify-between text-slate-600">
+                            <span>Taxes & Packaging (5% GST)</span>
+                            <span id="cartTax" class="font-semibold text-slate-900">₹0.00</span>
+                        </div>
+                        <div class="pt-2 border-t border-slate-200 flex justify-between text-base font-bold text-slate-900">
+                            <span>Total Amount</span>
+                            <span id="cartTotal" class="text-fresh-700 text-lg">₹0.00</span>
+                        </div>
+                    </div>
+
+                    <button onclick="openCheckoutModal()" id="checkoutBtn" class="w-full bg-fresh-600 text-white font-bold py-3.5 rounded-2xl shadow-lg hover:bg-fresh-700 transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                        <span>Proceed to Checkout</span>
+                        <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="wishlistModal" class="fixed inset-0 z-50 overflow-hidden hidden">
+        <div class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm" onclick="openWishlistModal()"></div>
+        <div class="absolute inset-y-0 right-0 max-w-full flex pl-10">
+            <div class="w-screen max-w-md bg-white shadow-2xl flex flex-col">
+                <div class="p-6 border-b border-slate-100 flex items-center justify-between bg-rose-50/50">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-rose-500 text-white flex items-center justify-center font-bold">
+                            <i class="fa-solid fa-heart"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-900 text-lg">My Wishlist</h3>
+                            <span id="wishlistModalCount" class="text-xs text-slate-500 font-medium">0 items saved</span>
+                        </div>
+                    </div>
+                    <button onclick="openWishlistModal()" class="w-9 h-9 rounded-xl bg-white border border-slate-200 text-slate-500 hover:bg-slate-100 transition flex items-center justify-center">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+                <div class="flex-1 overflow-y-auto p-6 space-y-4" id="wishlistItemsContainer">
+                    <!-- Wishlist items -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="checkoutModal" class="fixed inset-0 z-50 flex items-center justify-center hidden px-4">
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeCheckoutModal()"></div>
+        <div class="bg-white rounded-3xl max-w-md w-full p-8 relative z-10 shadow-2xl animate-in fade-in zoom-in duration-200">
+            <div id="checkoutFormContent">
+                <h3 class="text-2xl font-bold text-slate-900 mb-1">Express Delivery Details</h3>
+                <p class="text-xs text-slate-500 mb-6">Enter your address to receive groceries in 10 minutes.</p>
+                
+                <form onsubmit="processOrder(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Full Name</label>
+                        <input type="text" id="custName" required value="Vivek yadav" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-fresh-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Phone Number</label>
+                        <input type="tel" id="custPhone" required value="+91 9561663261" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-fresh-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Delivery Address</label>
+                        <textarea id="custAddress" required rows="2" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-fresh-500">Flat no 306, varad appartment Nallasopara Road, palghar</textarea>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Payment Method</label>
+                        <select class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-fresh-500">
+                            <option>Cash on Delivery (COD)</option>
+                            <option>UPI (GPay / PhonePe / Paytm)</option>
+                            <option>Credit / Debit Card</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="w-full bg-fresh-600 text-white font-bold py-3.5 rounded-2xl shadow-lg hover:bg-fresh-700 transition mt-2">
+                        Place Order Now
+                    </button>
+                </form>
+            </div>
+
+            <div id="checkoutSuccessContent" class="hidden text-center py-6">
+                <div class="w-20 h-20 rounded-full bg-fresh-100 text-fresh-600 flex items-center justify-center text-4xl mx-auto mb-4 animate-bounce">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <h3 class="text-2xl font-extrabold text-slate-900 mb-2">Order Placed Successfully!</h3>
+                <p class="text-sm text-slate-600 mb-6">Your order <span id="orderIdText" class="font-bold text-fresh-700">#FM-59210</span> is packed and out for delivery in <span class="font-bold text-slate-900">10 Minutes</span>.</p>
+                <button onclick="finishOrder()" class="bg-fresh-600 text-white font-bold px-8 py-3 rounded-xl text-xs hover:bg-fresh-700 transition shadow-lg">
+                    Continue Shopping
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 text-xs font-semibold">
+        <i class="fa-solid fa-circle-check text-fresh-400 text-base"></i>
+        <span id="toastMessage">Item added to cart!</span>
+    </div>
+
+    <script>
+        // 12+ Detailed Grocery Products with Unsplash Images
+        const products = [
+            {
+                id: 1,
+                name: "Fresh Red Apples",
+                category: "Fruits & Veggies",
+                weight: "1 kg",
+                price: 180,
+                originalPrice: 220,
+                discount: 18,
+                rating: 4.8,
+                reviewsCount: 145,
+                image: "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?auto=format&fit=crop&q=80&w=600",
+                badge: "Best Seller"
+            },
+            {
+                id: 2,
+                name: "Organic Bananas",
+                category: "Fruits & Veggies",
+                weight: "1 dozen (12 pcs)",
+                price: 65,
+                originalPrice: 80,
+                discount: 19,
+                rating: 4.7,
+                reviewsCount: 210,
+                image: "https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?auto=format&fit=crop&q=80&w=600",
+                badge: "Farm Fresh"
+            },
+            {
+                id: 3,
+                name: "Amul Fresh Homogenized Milk",
+                category: "Dairy & Breakfast",
+                weight: "1 Litre",
+                price: 72,
+                originalPrice: 75,
+                discount: 4,
+                rating: 4.9,
+                reviewsCount: 520,
+                image: "https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&q=80&w=600",
+                badge: "Essential"
+            },
+            {
+                id: 4,
+                name: "Whole Wheat Bread",
+                category: "Dairy & Breakfast",
+                weight: "400g Pack",
+                price: 55,
+                originalPrice: 65,
+                discount: 15,
+                rating: 4.6,
+                reviewsCount: 95,
+                image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&q=80&w=600",
+                badge: "Breakfast"
+            },
+            {
+                id: 5,
+                name: "Farm Fresh Tomatoes",
+                category: "Fruits & Veggies",
+                weight: "1 kg",
+                price: 45,
+                originalPrice: 60,
+                discount: 25,
+                rating: 4.5,
+                reviewsCount: 130,
+                image: "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&q=80&w=600",
+                badge: "Fresh"
+            },
+            {
+                id: 6,
+                name: "Organic Hass Avocados",
+                category: "Organic & Staples",
+                weight: "500g (2 pcs)",
+                price: 299,
+                originalPrice: 399,
+                discount: 25,
+                rating: 4.9,
+                reviewsCount: 88,
+                image: "https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?auto=format&fit=crop&q=80&w=600",
+                badge: "Organic"
+            },
+            {
+                id: 7,
+                name: "Green Fresh Spinach",
+                category: "Fruits & Veggies",
+                weight: "250g Bunch",
+                price: 30,
+                originalPrice: 40,
+                discount: 25,
+                rating: 4.7,
+                reviewsCount: 64,
+                image: "https://images.unsplash.com/photo-1576045057995-568f588f82fb?auto=format&fit=crop&q=80&w=600",
+                badge: "Leafy"
+            },
+            {
+                id: 8,
+                name: "Greek Yogurt Plain Natural",
+                category: "Dairy & Breakfast",
+                weight: "350g Cup",
+                price: 140,
+                originalPrice: 175,
+                discount: 20,
+                rating: 4.8,
+                reviewsCount: 112,
+                image: "https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&q=80&w=600",
+                badge: "Healthy"
+            },
+            {
+                id: 9,
+                name: "Fresh Juicy Oranges",
+                category: "Fruits & Veggies",
+                weight: "1 kg",
+                price: 120,
+                originalPrice: 160,
+                discount: 25,
+                rating: 4.6,
+                reviewsCount: 79,
+                image: "https://images.unsplash.com/photo-1547514701-42782101795e?auto=format&fit=crop&q=80&w=600",
+                badge: "Vitamin C"
+            },
+            {
+                id: 10,
+                name: "Cold Pressed Coconut Water",
+                category: "Beverages & Snacks",
+                weight: "500ml Bottle",
+                price: 90,
+                originalPrice: 110,
+                discount: 18,
+                rating: 4.8,
+                reviewsCount: 156,
+                image: "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&q=80&w=600",
+                badge: "Refreshing"
+            },
+            {
+                id: 11,
+                name: "Crunchy Roasted Almonds",
+                category: "Beverages & Snacks",
+                weight: "200g Jar",
+                price: 349,
+                originalPrice: 450,
+                discount: 22,
+                rating: 4.9,
+                reviewsCount: 230,
+                image: "https://images.unsplash.com/photo-1508061253366-f7da15bbf6d7?auto=format&fit=crop&q=80&w=600",
+                badge: "Crunchy"
+            },
+            {
+                id: 12,
+                name: "Organic Raw Wildflower Honey",
+                category: "Organic & Staples",
+                weight: "500g Jar",
+                price: 450,
+                originalPrice: 599,
+                discount: 25,
+                rating: 4.9,
+                reviewsCount: 184,
+                image: "https://images.unsplash.com/photo-1587049352847-4a222e784d38?auto=format&fit=crop&q=80&w=600",
+                badge: "Pure Organic"
+            }
+        ];
+
+        let cart = [];
+        let wishlist = [];
+        let currentFilter = 'All';
+
+        window.onload = function() {
+            renderProducts(products);
+            updateCartUI();
+            updateWishlistUI();
+        };
+
+        // Render Product Catalog
+        function renderProducts(listToRender) {
+            const grid = document.getElementById('shopSection');
+            const noProductsFound = document.getElementById('noProductsFound');
+
+            if (listToRender.length === 0) {
+                grid.innerHTML = '';
+                noProductsFound.classList.remove('hidden');
+                return;
+            }
+
+            noProductsFound.classList.add('hidden');
+            grid.innerHTML = listToRender.map(product => {
+                const isWishlisted = wishlist.includes(product.id);
+                return `
+                    <div class="bg-white rounded-3xl p-4 border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group relative">
+                        <div class="absolute top-6 left-6 z-10 flex gap-2">
+                            <span class="bg-fresh-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider shadow">
+                                ${product.badge}
+                            </span>
+                        </div>
+                        <button onclick="toggleWishlist(${product.id})" class="absolute top-6 right-6 z-10 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md shadow-md flex items-center justify-center text-slate-600 hover:text-rose-500 hover:scale-110 transition">
+                            <i class="${isWishlisted ? 'fa-solid text-rose-500' : 'fa-regular'} fa-heart"></i>
+                        </button>
+
+                        <div class="w-full h-48 rounded-2xl bg-slate-100 overflow-hidden mb-4 relative">
+                            <img src="${product.image}" alt="${product.name}" onerror="this.src='https://placehold.co/400x300/f0fdf4/16a34a?text=FreshMart'" 
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        </div>
+
+                        <div class="flex-1 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between text-xs text-slate-400 mb-1">
+                                    <span>${product.category}</span>
+                                    <div class="flex items-center text-amber-500 font-semibold gap-1">
+                                        <i class="fa-solid fa-star text-[10px]"></i>
+                                        <span>${product.rating}</span>
+                                        <span class="text-slate-400 font-normal">(${product.reviewsCount})</span>
+                                    </div>
+                                </div>
+                                <h3 class="font-bold text-slate-900 text-sm line-clamp-1 group-hover:text-fresh-600 transition">${product.name}</h3>
+                                <p class="text-xs text-slate-500 mt-0.5"><i class="fa-solid fa-weight-scale mr-1 text-slate-400"></i>${product.weight}</p>
+                            </div>
+
+                            <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+                                <div>
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="text-base font-extrabold text-slate-900">₹${product.price}</span>
+                                        <span class="text-xs text-slate-400 line-through">₹${product.originalPrice}</span>
+                                    </div>
+                                    <span class="text-[10px] text-emerald-600 font-bold">${product.discount}% OFF</span>
+                                </div>
+                                <button onclick="addToCart(${product.id})" class="bg-fresh-50 border border-fresh-200 text-fresh-700 hover:bg-fresh-600 hover:text-white px-4 py-2.5 rounded-2xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+                                    <i class="fa-solid fa-plus text-xs"></i>
+                                    <span>Add</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Category Filter
+        function filterCategory(category) {
+            currentFilter = category;
+            document.getElementById('currentCategoryTitle').innerText = category === 'All' ? 'Explore All Groceries' : category + ' Collection';
+            
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                if(btn.innerText.includes(category) || (category === 'All' && btn.innerText === 'All')) {
+                    btn.className = "category-btn px-4 py-2.5 rounded-xl text-xs font-bold bg-fresh-600 text-white shadow-sm transition";
+                } else {
+                    btn.className = "category-btn px-4 py-2.5 rounded-xl text-xs font-bold bg-white text-slate-700 border border-slate-200 hover:bg-fresh-50 transition";
+                }
+            });
+
+            if(category === 'All') {
+                renderProducts(products);
+            } else {
+                const filtered = products.filter(p => p.category === category);
+                renderProducts(filtered);
+            }
+        }
+
+        // Search Handlers
+        function handleSearch() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = products.filter(p => p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query));
+            renderProducts(filtered);
+        }
+
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            const filtered = products.filter(p => p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query));
+            renderProducts(filtered);
+        });
+
+        document.getElementById('mobileSearchInput').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            const filtered = products.filter(p => p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query));
+            renderProducts(filtered);
+        });
+
+        // Cart Actions
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const existingItem = cart.find(item => item.id === productId);
+
+            if(existingItem) {
+                existingItem.qty += 1;
+            } else {
+                cart.push({ ...product, qty: 1 });
+            }
+
+            updateCartUI();
+            showToast(`Added ${product.name} to cart!`);
+        }
+
+        function updateCartQty(productId, delta) {
+            const item = cart.find(i => i.id === productId);
+            if(item) {
+                item.qty += delta;
+                if(item.qty <= 0) {
+                    cart = cart.filter(i => i.id !== productId);
+                }
+            }
+            updateCartUI();
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(i => i.id !== productId);
+            updateCartUI();
+            showToast('Item removed from cart');
+        }
+
+        function updateCartUI() {
+            const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            const tax = Math.round(subtotal * 0.05); // 5% GST
+            const grandTotal = subtotal + (subtotal > 0 ? tax : 0);
+
+            document.getElementById('cartCountBadge').innerText = totalItems;
+            document.getElementById('cartDrawerItemCount').innerText = `${totalItems} items`;
+            document.getElementById('cartSubtotalHeader').innerText = `₹${subtotal}`;
+            document.getElementById('cartSubtotal').innerText = `₹${subtotal}`;
+            document.getElementById('cartTax').innerText = `₹${tax}`;
+            document.getElementById('cartTotal').innerText = `₹${grandTotal}`;
+
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            if(cart.length === 0) {
+                checkoutBtn.setAttribute('disabled', 'true');
+            } else {
+                checkoutBtn.removeAttribute('disabled');
+            }
+
+            const container = document.getElementById('cartItemsContainer');
+            if(cart.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-16">
+                        <i class="fa-solid fa-bag-shopping text-5xl text-slate-300 mb-3"></i>
+                        <h4 class="font-bold text-slate-700">Your cart is empty</h4>
+                        <p class="text-xs text-slate-400 mt-1">Add fresh groceries and organic items to start shopping.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = cart.map(item => `
+                <div class="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                    <img src="${item.image}" class="w-16 h-16 rounded-xl object-cover shrink-0">
+                    <div class="flex-1 min-w-0">
+                        <h4 class="font-bold text-slate-900 text-xs truncate">${item.name}</h4>
+                        <span class="text-[10px] text-slate-500">${item.weight}</span>
+                        <div class="flex items-center gap-2 mt-1">
+                            <span class="font-bold text-slate-900 text-xs">₹${item.price}</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 bg-white border border-slate-200 rounded-xl px-2 py-1">
+                        <button onclick="updateCartQty(${item.id}, -1)" class="w-6 h-6 rounded-lg text-slate-500 hover:bg-slate-100 transition flex items-center justify-center text-xs font-bold">-</button>
+                        <span class="text-xs font-bold text-slate-800 w-4 text-center">${item.qty}</span>
+                        <button onclick="updateCartQty(${item.id}, 1)" class="w-6 h-6 rounded-lg text-slate-500 hover:bg-slate-100 transition flex items-center justify-center text-xs font-bold">+</button>
+                    </div>
+                    <button onclick="removeFromCart(${item.id})" class="text-slate-400 hover:text-rose-500 transition p-1">
+                        <i class="fa-solid fa-trash-can text-xs"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function toggleCart() {
+            document.getElementById('cartDrawer').classList.toggle('hidden');
+        }
+
+        // Wishlist Actions
+        function toggleWishlist(productId) {
+            const index = wishlist.indexOf(productId);
+            if(index > -1) {
+                wishlist.splice(index, 1);
+                showToast('Removed from wishlist');
+            } else {
+                wishlist.push(productId);
+                showToast('Added to wishlist!');
+            }
+            updateWishlistUI();
+            renderProducts(currentFilter === 'All' ? products : products.filter(p => p.category === currentFilter));
+        }
+
+        function updateWishlistUI() {
+            const count = wishlist.length;
+            const badge = document.getElementById('wishlistCount');
+            badge.innerText = count;
+            if(count > 0) {
+                badge.classList.remove('scale-0');
+            } else {
+                badge.classList.add('scale-0');
+            }
+
+            document.getElementById('wishlistModalCount').innerText = `${count} items saved`;
+
+            const container = document.getElementById('wishlistItemsContainer');
+            if(count === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-16">
+                        <i class="fa-regular fa-heart text-5xl text-slate-300 mb-3"></i>
+                        <h4 class="font-bold text-slate-700">Your wishlist is empty</h4>
+                        <p class="text-xs text-slate-400 mt-1">Tap the heart icon on any product to save it for later.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const wishlistedProducts = products.filter(p => wishlist.includes(p.id));
+            container.innerHTML = wishlistedProducts.map(item => `
+                <div class="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                    <img src="${item.image}" class="w-16 h-16 rounded-xl object-cover shrink-0">
+                    <div class="flex-1 min-w-0">
+                        <h4 class="font-bold text-slate-900 text-xs truncate">${item.name}</h4>
+                        <span class="text-[10px] text-slate-500">${item.weight}</span>
+                        <div class="mt-1 font-bold text-fresh-700 text-xs">₹${item.price}</div>
+                    </div>
+                    <button onclick="addToCart(${item.id}); toggleWishlist(${item.id});" class="bg-fresh-600 text-white px-3 py-2 rounded-xl text-xs font-bold hover:bg-fresh-700 transition">
+                        Move to Cart
+                    </button>
+                    <button onclick="toggleWishlist(${item.id})" class="text-slate-400 hover:text-rose-500 transition p-1">
+                        <i class="fa-solid fa-xmark text-sm"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function openWishlistModal() {
+            document.getElementById('wishlistModal').classList.toggle('hidden');
+        }
+
+        // Checkout Handlers
+        function openCheckoutModal() {
+            toggleCart();
+            const modal = document.getElementById('checkoutModal');
+            document.getElementById('checkoutFormContent').classList.remove('hidden');
+            document.getElementById('checkoutSuccessContent').classList.add('hidden');
+            modal.classList.remove('hidden');
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkoutModal').classList.add('hidden');
+        }
+
+        function processOrder(e) {
+            e.preventDefault();
+            const randomOrderId = '#FM-' + Math.floor(10000 + Math.random() * 90000);
+            document.getElementById('orderIdText').innerText = randomOrderId;
+            
+            document.getElementById('checkoutFormContent').classList.add('hidden');
+            document.getElementById('checkoutSuccessContent').classList.remove('hidden');
+
+            cart = [];
+            updateCartUI();
+        }
+
+        function finishOrder() {
+            closeCheckoutModal();
+        }
+
+        function handleNewsletter(e) {
+            e.preventDefault();
+            const email = document.getElementById('newsletterEmail').value;
+            showToast(`Successfully subscribed with ${email}!`);
+            document.getElementById('newsletterEmail').value = '';
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMessage').innerText = message;
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
